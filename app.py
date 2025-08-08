@@ -18,7 +18,7 @@ def update_pptx():
     if not pptx_url:
         return {"error": "pptx_url is required"}, 400
 
-    # Download the PPTX file
+    # Téléchargement du fichier PPTX d’origine
     pptx_response = requests.get(pptx_url)
     if pptx_response.status_code != 200:
         return {"error": "Unable to download PPTX"}, 500
@@ -32,7 +32,7 @@ def update_pptx():
 
         prs = Presentation(input_path)
 
-        # Modify slide 1
+        # Modification de la slide 1
         try:
             slide1 = prs.slides[0]
             for shape in slide1.shapes:
@@ -42,7 +42,7 @@ def update_pptx():
         except Exception as e:
             return {"error": f"Error editing slide 1: {str(e)}"}, 500
 
-        # Add images to slide 4
+        # Ajout d'images à la slide 4
         try:
             slide4 = prs.slides[3]
             left = Inches(0.5)
@@ -55,7 +55,7 @@ def update_pptx():
         except Exception as e:
             return {"error": f"Error editing slide 4: {str(e)}"}, 500
 
-        # Save modified presentation
+        # Sauvegarde de la présentation modifiée
         prs.save(output_path)
 
         return send_file(output_path, as_attachment=True, download_name="modified_presentation.pptx")
